@@ -5,40 +5,27 @@ import java.util.Scanner;
  */
 public class Board {
 
+    private static final int BOARD_SIZE = 3;
+
     private char[][] board;
     private int moveCount;
     private boolean gameOver;
 
-    public Board(final int boardSize) {
-        this.board = new char[boardSize][boardSize];
+    public Board() {
+        this.board = new char[BOARD_SIZE][BOARD_SIZE];
         this.moveCount = 0;
     }
 
     public void displayBoard() {
-        for (int i = 0; i < board.length; i++) {
-            for (int j = 0; j < board[0].length; j++) {
+        for (int i = 0; i < BOARD_SIZE; i++) {
+            for (int j = 0; j < BOARD_SIZE; j++) {
                 System.out.print(board[i][j] + " ");
             }
             System.out.println();
         }
     }
 
-    public void makeMove(char mark) {
-        Scanner scanner = new Scanner(System.in);
-        int x, y;
-        do {
-            System.out.println("Please enter a valid move, 0 0 is top left, 0 1 is top middle, 0 2 is top right etc");
-            while (!scanner.hasNextInt()) {
-                System.out.println("Not a number, try again");
-                scanner.next();
-            }
-            y = scanner.nextInt();
-            while (!scanner.hasNextInt()) {
-                System.out.println("Not a number, try again");
-                scanner.next();
-            }
-            x = scanner.nextInt();
-        } while (!checkValidMove(y, x));
+    public void makeMove(int y, int x, char mark) {
         board[y][x] = mark;
         moveCount++;
         checkIfGameOver(y, x, mark);
@@ -49,7 +36,7 @@ public class Board {
     }
 
     private void checkIfGameOver(int y, int x, char mark) {
-        if (moveCount == board.length * board.length) {
+        if (moveCount == BOARD_SIZE * BOARD_SIZE) {
             System.out.println("Draw");
             gameOver = true;
         } else if (checkWin(y, x)) {
@@ -58,8 +45,8 @@ public class Board {
         }
     }
 
-    private boolean checkValidMove(int y, int x) {
-        return x >= 0 && x < board[0].length && y >= 0 && y < board.length && board[y][x] == 0;
+    public boolean checkValidMove(int y, int x) {
+        return x >= 0 && x < BOARD_SIZE && y >= 0 && y < BOARD_SIZE && board[y][x] == 0;
     }
 
     private boolean checkWin(int y, int x) {
@@ -67,7 +54,7 @@ public class Board {
     }
 
     private boolean checkVertical(int y, int x) {
-        for (int i = 0; i < board.length; i++) {
+        for (int i = 0; i < BOARD_SIZE; i++) {
             if (board[i][x] != board[y][x]) {
                 return false;
             }
@@ -76,7 +63,7 @@ public class Board {
     }
 
     private boolean checkDiagonal(int y, int x) {
-        for (int i = 0; i < board.length; i++) {
+        for (int i = 0; i < BOARD_SIZE; i++) {
             if (board[y][x] != board[i][i]) {
                 return false;
             }
@@ -85,7 +72,7 @@ public class Board {
     }
 
     private boolean checkReverseDiagonal(int y, int x) {
-        for (int i = 0; i < board.length; i++) {
+        for (int i = 0; i < BOARD_SIZE; i++) {
             if (board[y][x] != board[i][board.length - 1 - i]) {
                 return false;
             }
@@ -94,7 +81,7 @@ public class Board {
     }
 
     private boolean checkHorizontal(int y, int x) {
-        for (int i = 0; i < board[0].length; i++) {
+        for (int i = 0; i < BOARD_SIZE; i++) {
             if (board[y][i] != board[y][x]) {
                 return false;
             }

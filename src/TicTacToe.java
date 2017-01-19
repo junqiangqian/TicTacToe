@@ -5,13 +5,13 @@ public class TicTacToe {
     private Board board;
     private Player player1;
     private Player player2;
-    private char currentPlayer;
+    private Player currentPlayer;
 
     private static final char PLAYER_ONE = 'X';
     private static final char PLAYER_TWO = 'O';
 
-    public TicTacToe(Board board) {
-        this.board = board;
+    public TicTacToe() {
+        this.board = new Board();
     }
 
     public void play() {
@@ -26,6 +26,7 @@ public class TicTacToe {
             }
             mode = scanner.nextInt();
         } while (mode < 0 || mode > 2);
+        initialisePlayers(mode);
         int turn;
         do {
             System.out.println("Which player should go first? Enter 1 for Player X, 2 for Player O");
@@ -35,11 +36,11 @@ public class TicTacToe {
             }
             turn = scanner.nextInt();
         } while (!(turn == 1 || turn == 2));
-        currentPlayer = turn == 1? PLAYER_ONE : PLAYER_TWO;
-        playMode(mode);
+        currentPlayer = turn == 1? player1: player2;
+        gameLoop();
     }
 
-    private void playMode(int mode) {
+    private void initialisePlayers(int mode) {
         switch(mode) {
             case 0:
                 this.player1 = new Human(PLAYER_ONE);
@@ -56,17 +57,16 @@ public class TicTacToe {
             default:
                 System.out.println("Error, invalid mode");
         }
-        gameLoop();
     }
 
     private void switchTurn() {
-        currentPlayer = currentPlayer == PLAYER_ONE? PLAYER_TWO : PLAYER_ONE;
+        currentPlayer = currentPlayer.mark == PLAYER_ONE? player2: player1;
     }
 
     private void gameLoop() {
         while (!board.gameOver()) {
-            System.out.printf("It is Player %c's turn\n", currentPlayer);
-            board.makeMove(currentPlayer);
+            System.out.printf("It is Player %c's turn\n", currentPlayer.mark);
+            currentPlayer.makeMove(board);
             board.displayBoard();
             switchTurn();
         }
