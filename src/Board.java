@@ -7,6 +7,7 @@ public class Board {
 
     private char[][] board;
     private int moveCount;
+    private boolean gameOver;
 
     public Board(final int boardSize) {
         this.board = new char[boardSize][boardSize];
@@ -40,7 +41,21 @@ public class Board {
         } while (!checkValidMove(y, x));
         board[y][x] = mark;
         moveCount++;
-        checkWin(y, x);
+        checkIfGameOver(y, x, mark);
+    }
+
+    public boolean gameOver() {
+        return gameOver;
+    }
+
+    private void checkIfGameOver(int y, int x, char mark) {
+        if (moveCount == board.length * board.length) {
+            System.out.println("Draw");
+            gameOver = true;
+        } else if (checkWin(y, x)) {
+            System.out.printf("Player %c has won\n", mark);
+            gameOver = true;
+        }
     }
 
     private boolean checkValidMove(int y, int x) {

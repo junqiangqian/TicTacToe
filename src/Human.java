@@ -8,7 +8,7 @@ public class Human extends Player {
     }
 
     public void makeMove(Board board) {
-        System.out.println(mark);
+        board.makeMove(mark);
     }
 
 }
