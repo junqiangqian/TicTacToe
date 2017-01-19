@@ -42,45 +42,34 @@ public class TicTacToe {
     private void playMode(int mode) {
         switch(mode) {
             case 0:
-                humanVsHuman();
+                this.player1 = new Human(PLAYER_ONE);
+                this.player2 = new Human(PLAYER_TWO);
                 break;
             case 1:
-                humanVsComputer();
+                this.player1 = new Human(PLAYER_ONE);
+                this.player2 = new Computer(PLAYER_TWO);
                 break;
             case 2:
-                computerVsComputer();
+                this.player1 = new Computer(PLAYER_ONE);
+                this.player2 = new Computer(PLAYER_TWO);
                 break;
             default:
                 System.out.println("Error, invalid mode");
         }
+        gameLoop();
     }
 
-    private void humanVsHuman() {
-        this.player1 = new Human(PLAYER_ONE);
-        this.player2 = new Human(PLAYER_TWO);
-        System.out.println("Human vs Human Mode");
+    private void switchTurn() {
+        currentPlayer = currentPlayer == PLAYER_ONE? PLAYER_TWO : PLAYER_ONE;
+    }
+
+    private void gameLoop() {
         while (!board.gameOver()) {
             System.out.printf("It is Player %c's turn\n", currentPlayer);
             board.makeMove(currentPlayer);
             board.displayBoard();
             switchTurn();
         }
-    }
-
-    private void humanVsComputer() {
-        this.player1 = new Human('x');
-        this.player2 = new Computer('o');
-        System.out.println("Human vs Computer Mode");
-    }
-
-    private void computerVsComputer() {
-        this.player1 = new Computer('x');
-        this.player2 = new Computer('o');
-        System.out.println("Computer vs Computer Mode");
-    }
-
-    private void switchTurn() {
-        currentPlayer = currentPlayer == PLAYER_ONE? PLAYER_TWO : PLAYER_ONE;
     }
 
 }
