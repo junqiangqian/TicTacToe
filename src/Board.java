@@ -13,6 +13,19 @@ public class Board {
 
     public Board() {
         this.board = new char[BOARD_SIZE][BOARD_SIZE];
+        /*board[0][0] = 'O';
+        board[0][1] = 'X';
+        board[0][2] = 'X';
+        board[1][0] = 'X';
+        board[1][1] = 'X';
+        board[1][2] = 'O';
+        board[2][0] = 'O';
+        board[2][1] = 'O';
+        this.moveCount = 8; */
+        //this.moveCount = 0;
+        board[0][0] = 'X';
+        board[2][2] = 'X';
+        board[2][0] = 'O';
         this.moveCount = 0;
     }
 
@@ -25,10 +38,20 @@ public class Board {
         }
     }
 
+    public void tryMove(int y, int x, char mark) {
+        board[y][x] = mark;
+        moveCount++;
+    }
+
     public void makeMove(int y, int x, char mark) {
         board[y][x] = mark;
         moveCount++;
         checkIfGameOver(y, x, mark);
+    }
+
+    public void undoMove(int y, int x) {
+        board[y][x] = 0;
+        moveCount--;
     }
 
     public boolean gameOver() {
@@ -36,12 +59,14 @@ public class Board {
     }
 
     private void checkIfGameOver(int y, int x, char mark) {
-        if (moveCount == BOARD_SIZE * BOARD_SIZE) {
-            System.out.println("Draw");
-            gameOver = true;
-        } else if (checkWin(y, x)) {
+        if (isWin(y, x)) {
             System.out.printf("Player %c has won\n", mark);
             gameOver = true;
+        } else if (isDraw()) {
+            System.out.println("Draw");
+            gameOver = true;
+        } else {
+            gameOver = false;
         }
     }
 
@@ -49,8 +74,12 @@ public class Board {
         return x >= 0 && x < BOARD_SIZE && y >= 0 && y < BOARD_SIZE && board[y][x] == 0;
     }
 
-    private boolean checkWin(int y, int x) {
+    public boolean isWin(int y, int x) {
         return checkHorizontal(y, x) || checkVertical(y, x) || checkDiagonal(y, x) || checkReverseDiagonal(y, x);
+    }
+
+    public boolean isDraw() {
+        return moveCount == BOARD_SIZE * BOARD_SIZE;
     }
 
     private boolean checkVertical(int y, int x) {
