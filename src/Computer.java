@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -7,6 +8,7 @@ import java.util.List;
 public class Computer extends Player {
 
     private List<Integer> possibleMoves;
+    private int[] positionScores = {2, 1, 2, 1, 3, 1, 2, 1, 2};
 
     public Computer(char mark) {
         super(PlayerType.COMPUTER, mark);
@@ -49,6 +51,9 @@ public class Computer extends Player {
                 return i;
             }
             board.undoMove(y, x);
+            if (positionScores[i] > move) {
+                move = i;
+            }
         }
         return move;
     }
