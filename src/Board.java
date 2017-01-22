@@ -5,7 +5,7 @@ import java.util.Scanner;
  */
 public class Board {
 
-    private static final int BOARD_SIZE = 3;
+    private final int BOARD_SIZE = 3;
 
     private char[][] board;
     private int moveCount;
@@ -23,6 +23,10 @@ public class Board {
             }
             System.out.println();
         }
+    }
+
+    public int getBoardSize() {
+        return BOARD_SIZE;
     }
 
     public void tryMove(int y, int x, char mark) {
@@ -45,17 +49,6 @@ public class Board {
         return gameOver;
     }
 
-    private void checkIfGameOver(int y, int x, char mark) {
-        if (isWin(y, x)) {
-            System.out.printf("Player %c has won\n", mark);
-            gameOver = true;
-        } else if (isDraw()) {
-            System.out.println("Draw");
-            gameOver = true;
-        } else {
-            gameOver = false;
-        }
-    }
 
     public boolean checkValidMove(int y, int x) {
         return x >= 0 && x < BOARD_SIZE && y >= 0 && y < BOARD_SIZE && board[y][x] == 0;
@@ -67,6 +60,60 @@ public class Board {
 
     public boolean isDraw() {
         return moveCount == BOARD_SIZE * BOARD_SIZE;
+    }
+
+    public int possibleWaysToWin(int y, int x, char opponentMark) {
+        int result = 0;
+        boolean possibleToWin = true;
+        for (int i = 0; i < BOARD_SIZE; i++) {
+            possibleToWin = possibleToWin && (board[i][x] != opponentMark);
+        }
+        if (possibleToWin) {
+            result++;
+        }
+        possibleToWin = true;
+        for (int j = 0; j < BOARD_SIZE; j++) {
+            possibleToWin = possibleToWin && (board[y][j] != opponentMark);
+        }
+        if (possibleToWin) {
+            result++;
+        }
+        possibleToWin = true;
+        if (y == x) {
+            for (int i = 0; i < BOARD_SIZE; i++) {
+                possibleToWin = possibleToWin && (board[i][i] != opponentMark);
+            }
+            if (possibleToWin) {
+                result++;
+            }
+        }
+        if (x + y == BOARD_SIZE - 1) {
+            possibleToWin = true;
+            for (int j = 0; j < BOARD_SIZE; j++) {
+                possibleToWin = possibleToWin && (board[j][BOARD_SIZE - j - 1] != opponentMark);
+            }
+            if (possibleToWin) {
+                result++;
+            }
+        }
+        return result;
+    }
+
+    /* Returns true iff position is along diagonal or reverse diagonal */
+    private boolean alongDiagonal(int y, int x) {
+        return y == x || (x + y) == BOARD_SIZE - 1;
+    }
+
+    private void checkIfGameOver(int y, int x, char mark) {
+        if (isWin(y, x)) {
+            System.out.printf("Player %c has won\n", mark);
+            gameOver = true;
+        } else if (isDraw()) {
+            System.out.println("Draw");
+            gameOver = true;
+        } else {
+            gameOver = false;
+        }
     }
 
     private boolean checkVertical(int y, int x) {
