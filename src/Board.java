@@ -99,11 +99,6 @@ public class Board {
         return result;
     }
 
-    /* Returns true iff position is along diagonal or reverse diagonal */
-    private boolean alongDiagonal(int y, int x) {
-        return y == x || (x + y) == BOARD_SIZE - 1;
-    }
-
     private void checkIfGameOver(int y, int x, char mark) {
         if (isWin(y, x)) {
             System.out.printf("Player %c has won\n", mark);

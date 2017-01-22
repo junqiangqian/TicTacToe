@@ -8,7 +8,6 @@ public class Computer extends Player {
 
     private List<Integer> possibleMoves;
 
-
     public Computer(char mark) {
         super(PlayerType.COMPUTER, mark);
         this.possibleMoves = new ArrayList<Integer>();
@@ -17,17 +16,19 @@ public class Computer extends Player {
     public void makeMove(Board board) {
         updatePossibleMoves(board);
         int move = generateMove(board);
-        int y = move / 3, x = move % 3;
+        int boardSize = board.getBoardSize();
+        int y = move / boardSize, x = move % boardSize;
         System.out.printf("The computer (player %c) chose position %d %d\n", mark, y, x);
         board.makeMove(y, x, mark);
     }
 
     private void updatePossibleMoves(Board board) {
+        int boardSize = board.getBoardSize();
         possibleMoves.clear();
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
+        for (int i = 0; i < boardSize; i++) {
+            for (int j = 0; j < boardSize; j++) {
                 if (board.checkValidMove(i, j)) {
-                    possibleMoves.add(i * 3 + j);
+                    possibleMoves.add(i * boardSize + j);
                 }
             }
         }
@@ -35,10 +36,9 @@ public class Computer extends Player {
 
     private int generateMove(Board board) {
         char opponentMark = mark == 'O'? 'X' : 'O';
-        int move = -1;
-        int maxPossibleWaysToWin = 0;
+        int move = -1, boardSize = board.getBoardSize(), maxPossibleWaysToWin = 0;
         for (Integer i : possibleMoves) {
-            int y = i / 3, x = i % 3;
+            int y = i / boardSize, x = i % boardSize;
             board.tryMove(y, x, mark);
             if (board.isWin(y, x) || board.isDraw()) {
                 board.undoMove(y, x);
