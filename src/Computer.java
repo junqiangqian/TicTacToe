@@ -40,19 +40,20 @@ public class Computer extends Player {
         for (Integer i : possibleMoves) {
             int y = i / boardSize, x = i % boardSize;
             board.tryMove(y, x, mark);
-            if (board.isWin(y, x) || board.isDraw()) {
+            if (board.isWin(y, x, mark) || board.isDraw()) {
                 board.undoMove(y, x);
                 return i;
             }
             board.undoMove(y, x);
             board.tryMove(y, x, opponentMark);
-            if (board.isWin(y, x)) {
+            if (board.isWin(y, x, opponentMark)) {
                 board.undoMove(y, x);
                 return i;
             }
             board.undoMove(y, x);
             board.tryMove(y, x, mark);
             int possibleWaysToWin  = board.possibleWaysToWin(y, x, opponentMark);
+            System.out.printf("At position %d %d there are %d ways to win\n", y, x, possibleWaysToWin);
             if (possibleWaysToWin > maxPossibleWaysToWin) {
                 maxPossibleWaysToWin = possibleWaysToWin;
                 move = i;

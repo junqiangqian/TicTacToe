@@ -54,8 +54,8 @@ public class Board {
         return x >= 0 && x < BOARD_SIZE && y >= 0 && y < BOARD_SIZE && board[y][x] == 0;
     }
 
-    public boolean isWin(int y, int x) {
-        return checkHorizontal(y, x) || checkVertical(y, x) || checkDiagonal(y, x) || checkReverseDiagonal(y, x);
+    public boolean isWin(int y, int x, char mark) {
+        return checkHorizontal(y, mark) || checkVertical(x, mark) || checkDiagonal(mark) || checkReverseDiagonal(mark);
     }
 
     public boolean isDraw() {
@@ -64,43 +64,23 @@ public class Board {
 
     public int possibleWaysToWin(int y, int x, char opponentMark) {
         int result = 0;
-        boolean possibleToWin = true;
-        for (int i = 0; i < BOARD_SIZE; i++) {
-            possibleToWin = possibleToWin && (board[i][x] != opponentMark);
-        }
-        if (possibleToWin) {
+        if (checkIfPossibleWinningColumn(x, opponentMark)) {
             result++;
         }
-        possibleToWin = true;
-        for (int j = 0; j < BOARD_SIZE; j++) {
-            possibleToWin = possibleToWin && (board[y][j] != opponentMark);
-        }
-        if (possibleToWin) {
+        if (checkIfPossibleWinningRow(y, opponentMark)) {
             result++;
         }
-        possibleToWin = true;
-        if (y == x) {
-            for (int i = 0; i < BOARD_SIZE; i++) {
-                possibleToWin = possibleToWin && (board[i][i] != opponentMark);
-            }
-            if (possibleToWin) {
-                result++;
-            }
+        if (y == x && checkIfPossibleWinningDiagonal(opponentMark)) {
+            result++;
         }
-        if (x + y == BOARD_SIZE - 1) {
-            possibleToWin = true;
-            for (int j = 0; j < BOARD_SIZE; j++) {
-                possibleToWin = possibleToWin && (board[j][BOARD_SIZE - j - 1] != opponentMark);
-            }
-            if (possibleToWin) {
-                result++;
-            }
+        if (x + y == BOARD_SIZE - 1 && checkIfPossibleWinningReverseDiagonal(opponentMark)) {
+            result++;
         }
         return result;
     }
 
     private void checkIfGameOver(int y, int x, char mark) {
-        if (isWin(y, x)) {
+        if (isWin(y, x, mark)) {
             System.out.printf("Player %c has won\n", mark);
             gameOver = true;
         } else if (isDraw()) {
@@ -111,36 +91,72 @@ public class Board {
         }
     }
 
-    private boolean checkVertical(int y, int x) {
+    private boolean checkVertical(int x, char mark) {
         for (int i = 0; i < BOARD_SIZE; i++) {
-            if (board[i][x] != board[y][x]) {
+            if (board[i][x] != mark) {
                 return false;
             }
         }
         return true;
     }
 
-    private boolean checkDiagonal(int y, int x) {
+    private boolean checkDiagonal(char mark) {
         for (int i = 0; i < BOARD_SIZE; i++) {
-            if (board[y][x] != board[i][i]) {
+            if (board[i][i] != mark) {
                 return false;
             }
         }
         return true;
     }
 
-    private boolean checkReverseDiagonal(int y, int x) {
+    private boolean checkReverseDiagonal(char mark) {
         for (int i = 0; i < BOARD_SIZE; i++) {
-            if (board[y][x] != board[i][board.length - 1 - i]) {
+            if (board[i][board.length - 1 - i] != mark) {
                 return false;
             }
         }
         return true;
     }
 
-    private boolean checkHorizontal(int y, int x) {
+    private boolean checkHorizontal(int y, char mark) {
         for (int i = 0; i < BOARD_SIZE; i++) {
-            if (board[y][i] != board[y][x]) {
+            if (board[y][i] != mark) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean checkIfPossibleWinningRow(int y, char mark) {
+        for (int i = 0; i < BOARD_SIZE; i++) {
+            if (board[y][i] == mark) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean checkIfPossibleWinningColumn(int x, char mark) {
+        for (int i = 0; i < BOARD_SIZE; i++) {
+            if (board[i][x] == mark) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean checkIfPossibleWinningDiagonal(char mark) {
+        for (int i = 0; i < BOARD_SIZE; i++) {
+            if (board[i][i] == mark) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean checkIfPossibleWinningReverseDiagonal(char mark) {
+        for (int i = 0; i < BOARD_SIZE; i++) {
+            if (board[i][BOARD_SIZE - 1 - i] == mark) {
                 return false;
             }
         }
