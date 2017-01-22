@@ -53,7 +53,6 @@ public class Computer extends Player {
             board.undoMove(y, x);
             board.tryMove(y, x, mark);
             int possibleWaysToWin  = board.possibleWaysToWin(y, x, opponentMark);
-            System.out.printf("At position %d %d there are %d ways to win\n", y, x, possibleWaysToWin);
             if (possibleWaysToWin > maxPossibleWaysToWin) {
                 maxPossibleWaysToWin = possibleWaysToWin;
                 move = i;
