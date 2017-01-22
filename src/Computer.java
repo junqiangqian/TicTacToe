@@ -18,6 +18,12 @@ public class Computer extends Player {
         int move = generateMove(board);
         int boardSize = board.getBoardSize();
         int y = move / boardSize, x = move % boardSize;
+        System.out.println("The computer is thinking...");
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         System.out.printf("The computer (player %c) chose position %d %d\n", mark, y, x);
         board.makeMove(y, x, mark);
     }
