@@ -1,3 +1,7 @@
+import com.sun.deploy.util.StringUtils;
+
+import java.util.Collections;
+
 /**
  * Created by jq on 18/01/17.
  */
@@ -11,15 +15,26 @@ public class Board {
 
     public Board() {
         this.board = new char[BOARD_SIZE][BOARD_SIZE];
+        for (int i = 0; i < BOARD_SIZE; i++) {
+            for (int j = 0; j < BOARD_SIZE; j++) {
+                board[i][j] = ' ';
+            }
+        }
         this.moveCount = 0;
     }
 
     public void displayBoard() {
         for (int i = 0; i < BOARD_SIZE; i++) {
             for (int j = 0; j < BOARD_SIZE; j++) {
-                System.out.print(board[i][j] + " ");
+                System.out.print(board[i][j]);
+                if (j < BOARD_SIZE - 1) {
+                    System.out.print(" | ");
+                }
             }
             System.out.println();
+            if (i < BOARD_SIZE - 1) {
+                System.out.println(String.join("", Collections.nCopies(BOARD_SIZE, "===")));
+            }
         }
     }
 
@@ -39,7 +54,7 @@ public class Board {
     }
 
     public void undoMove(int y, int x) {
-        board[y][x] = 0;
+        board[y][x] = ' ';
         moveCount--;
     }
 
@@ -49,7 +64,7 @@ public class Board {
 
 
     public boolean checkValidMove(int y, int x) {
-        return x >= 0 && x < BOARD_SIZE && y >= 0 && y < BOARD_SIZE && board[y][x] == 0;
+        return x >= 0 && x < BOARD_SIZE && y >= 0 && y < BOARD_SIZE && board[y][x] == ' ';
     }
 
     public boolean isWin(int y, int x, char mark) {
