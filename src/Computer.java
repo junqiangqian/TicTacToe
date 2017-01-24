@@ -20,7 +20,7 @@ public class Computer extends Player {
         int y = move / boardSize, x = move % boardSize;
         System.out.println("The computer is thinking...");
         try {
-            Thread.sleep(2000);
+            Thread.sleep(1500);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -59,7 +59,8 @@ public class Computer extends Player {
             board.undoMove(y, x);
             board.tryMove(y, x, mark);
             int possibleWaysToWin  = board.possibleWaysToWin(y, x, opponentMark);
-            if (possibleWaysToWin > maxPossibleWaysToWin) {
+            if (possibleWaysToWin > maxPossibleWaysToWin || possibleWaysToWin == maxPossibleWaysToWin
+                    && board.isCorner(y, x)) {
                 maxPossibleWaysToWin = possibleWaysToWin;
                 move = i;
             }

@@ -1,5 +1,3 @@
-import java.util.Scanner;
-
 /**
  * Created by jq on 18/01/17.
  */
@@ -77,6 +75,11 @@ public class Board {
             result++;
         }
         return result;
+    }
+
+    public boolean isCorner(int y, int x) {
+        return y == 0 && x == 0 || y == 0 && x == BOARD_SIZE - 1 || y == BOARD_SIZE - 1 && x == BOARD_SIZE - 1
+                ||  y == BOARD_SIZE - 1 && x == 0;
     }
 
     private void checkIfGameOver(int y, int x, char mark) {
